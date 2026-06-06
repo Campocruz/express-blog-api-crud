@@ -2,9 +2,9 @@ const posts = require('../data/posts')
 
 
 const index = (req, res) => {
-  const query = req.query.titolo;
+  const query = req.query.title;
   if (query) {
-    const filterdPost = posts.find(post => post.titolo.toLowerCase().includes(query.toLowerCase()))
+    const filterdPost = posts.find(post => post.title.toLowerCase().includes(query.toLowerCase()))
     if (!filterdPost) {
       return res.status(404).json({
         error: 'Post non trovata'
