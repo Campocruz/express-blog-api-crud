@@ -36,15 +36,37 @@ const store = (req, res) => {
 
   posts.push(newPost);
 
-  console.log(posts);
-
   res.status(201);
   res.json(newPost);
 
 }
 
 const update = (req, res) => {
-  res.json({ "messaggio": "Update by Post ID" })
+  const isBody = req.body;
+  if (isBody) {
+    const idPost = req.params.id;
+    const indexPost = posts.findIndex(post => post.id === parseInt(idPost))
+    if (indexPost === -1) {
+      return res.status(404).json({
+        error: 'Post non Trovato'
+      })
+    }
+
+    posts[indexPost] = {
+      ...posts[indexPost],
+      "title": req.body.title,
+      "content": req.body.content,
+      "image": req.body.image,
+      "tags": req.body.tags
+    };
+
+    res.status(201);
+    res.json(posts)
+  } else {
+    return res.status(404).json({
+      error: 'Nessun body'
+    })
+  }
 }
 
 const modify = (req, res) => {
