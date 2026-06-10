@@ -42,10 +42,8 @@ const store = (req, res) => {
 }
 
 const update = (req, res) => {
-  const isBody = req.body;
-  if (isBody) {
-    const idPost = req.params.id;
-    const indexPost = posts.findIndex(post => post.id === parseInt(idPost))
+  if (req.body) {
+    const indexPost = posts.findIndex(post => post.id === parseInt(req.params.id))
     if (indexPost === -1) {
       return res.status(404).json({
         error: 'Post non Trovato'
@@ -73,17 +71,31 @@ const update = (req, res) => {
 }
 
 const modify = (req, res) => {
-  const isBody = req.body;
-  if (isBody) {
-    const idPost = req.params.id;
-    const indexPost = posts.findIndex(post => post.id === parseInt(idPost))
+  if (req.body) {
+    const indexPost = posts.findIndex(post => post.id === parseInt(req.params.id))
     if (indexPost === -1) {
       return res.status(404).json({
         error: 'Post non trovato'
       })
     }
 
-    posts[indexPost] = { ...posts[indexPost], ...req.body };
+    // posts[indexPost] = { ...posts[indexPost], ...req.body };
+
+    const newObj = {};
+    const bodyKeys = Object.keys(req.body);
+
+    for (let i = 0; i < bodyKeys.length; i++) {
+      const key = bodyKeys[i];
+
+      if (Object.hasOwn(posts[0], key)) {
+        newObj[key] = req.body[key];
+      }
+    }
+
+    posts[indexPost] = {
+      ...posts[indexPost],
+      ...newObj
+    };
 
     res.status(201)
     res.json({
