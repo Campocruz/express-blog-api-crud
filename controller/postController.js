@@ -1,6 +1,5 @@
 const posts = require('../data/posts')
 
-
 const index = (req, res) => {
   const query = req.query.title;
   if (query) {
@@ -26,7 +25,22 @@ const show = (req, res) => {
 }
 
 const store = (req, res) => {
-  res.json({ "messaggio": "store new Post" })
+  const newId = posts[posts.length - 1].id + 1;
+  const newPost = {
+    "id": newId,
+    "title": req.body.title,
+    "content": req.body.content,
+    "image": req.body.image,
+    "tags": req.body.tags
+  }
+
+  posts.push(newPost);
+
+  console.log(posts);
+
+  res.status(201);
+  res.json(newPost);
+
 }
 
 const update = (req, res) => {

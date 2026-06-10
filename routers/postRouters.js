@@ -11,7 +11,7 @@ router.get('/', postController.index)
 router.get('/:id', postController.show)
 
 // POST by ID -> STORE
-router.post('/:id', postController.store)
+router.post('/', postController.store)
 
 // PUT by ID -> UPDATE
 router.put('/:id', postController.update)

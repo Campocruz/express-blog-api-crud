@@ -7,6 +7,8 @@ const port = 4000;
 // Define Path Static Resource 
 app.use(express.static('public'))
 
+app.use(express.json());
+
 const postRouter = require('./routers/postRouters')
 
 // Listen Server
