@@ -61,7 +61,10 @@ const update = (req, res) => {
     };
 
     res.status(201);
-    res.json(posts)
+    res.json({
+      message: 'Update completo'
+    })
+
   } else {
     return res.status(404).json({
       error: 'Nessun body'
@@ -70,7 +73,28 @@ const update = (req, res) => {
 }
 
 const modify = (req, res) => {
-  res.json({ "messaggio": "Modify by Post ID" })
+  const isBody = req.body;
+  if (isBody) {
+    const idPost = req.params.id;
+    const indexPost = posts.findIndex(post => post.id === parseInt(idPost))
+    if (indexPost === -1) {
+      return res.status(404).json({
+        error: 'Post non trovato'
+      })
+    }
+
+    posts[indexPost] = { ...posts[indexPost], ...req.body };
+
+    res.status(201)
+    res.json({
+      message: 'Modify completo'
+    })
+
+  } else {
+    return res.status(404).json({
+      error: 'Nessun body'
+    })
+  }
 }
 
 const destroy = (req, res) => {
