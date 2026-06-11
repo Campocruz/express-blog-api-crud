@@ -11,12 +11,6 @@ const app = express();
 // Define Port
 const port = 4000;
 
-// Define Path Static Resource 
-app.use(express.static('public'))
-
-// Import JSON format for read body request
-app.use(express.json());
-
 // Import Router Post
 const postRouter = require('./routers/postRouters')
 
@@ -24,6 +18,12 @@ const postRouter = require('./routers/postRouters')
 const logReq = require('./middleware/logReq')
 const notFound = require('./middleware/notFound')
 const errorHandler = require('./middleware/errorHandler')
+
+// Define Path Static Resource 
+app.use(express.static('public'))
+
+// Import JSON format for read body request
+app.use(express.json());
 
 /*
       END IMPORT SECTION
@@ -33,7 +33,7 @@ const errorHandler = require('./middleware/errorHandler')
 app.use(logReq)
 
 // Get Home
-app.get('/', logReq, (req, res) => {
+app.get('/', (req, res) => {
   res.json({
     messaggio: "Server del mio Blog"
   })

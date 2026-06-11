@@ -8,7 +8,6 @@ const router = express.Router();
 const postController = require('../controller/postController')
 
 // Import middleware
-const logReq = require('../middleware/logReq')
 const checkApiKey = require('../middleware/checkApiKey')
 
 // GET -> INDEX
