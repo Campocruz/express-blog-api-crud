@@ -9,7 +9,7 @@ const express = require('express');
 const app = express();
 
 // Define Port
-const port = 4000;
+const port = 3000;
 
 // Import Router Post
 const postRouter = require('./routers/postRouters')

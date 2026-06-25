@@ -1,5 +1,7 @@
 const posts = require('../data/posts')
 
+const connection = require('../database/connection')
+
 const index = (req, res) => {
   const query = req.query.title;
   if (query) {
