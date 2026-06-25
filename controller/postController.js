@@ -102,14 +102,21 @@ const modify = (req, res) => {
 
 
 const destroy = (req, res) => {
-  const index = posts.findIndex(post => post.id === parseInt(req.params.id))
-  if (index === -1) {
-    return res.status(404).json({
-      error: 'Post non trovato'
+  let sql;
+  if (req.params.id) {
+    const id = parseInt(req.params.id);
+    const findIdSql = `SELECT * FROM posts WHERE id = ?`;
+    connection.query(findIdSql, [id], (err, results) => {
+      if (err) return res.status(500).json({ error: 'Database query failed' })
+      if (results.length === 0) return res.status(404).json({ error: 'Post not found' });
+    });
+
+    const sql = `DELETE FROM posts WHERE id = ${id}`
+    connection.query(sql, (err, results) => {
+      if (err) return res.status(500).json({ error: 'Database query failed' })
     })
+    res.sendStatus(204);
   }
-  posts.splice(index, 1)
-  res.sendStatus(204);
 }
 
 module.exports = { index, show, store, update, modify, destroy }
