@@ -24,7 +24,19 @@ const show = (req, res) => {
     connection.query(sql, [id], (err, results) => {
       if (err) return res.status(500).json({ error: 'Database query failed' })
       if (results.length === 0) return res.status(404).json({ error: 'Post not found' });
-      res.json(results[0])
+      const post = results[0];
+      console.log(post);
+      const sqlTags = `SELECT tags.label
+                      FROM post_tag
+                      JOIN tags ON post_tag.tag_id = tags.id
+                      JOIN posts ON post_tag.post_id = posts.id
+                      WHERE posts.id = ${id}`;
+      connection.query(sqlTags, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database quey failed' })
+        post.tags = results;
+        console.log(post);
+        res.json(post);
+      });
     });
   }
 }
