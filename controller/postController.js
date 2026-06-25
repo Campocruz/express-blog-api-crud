@@ -2,18 +2,19 @@ const posts = require('../data/posts')
 
 const connection = require('../database/connection')
 
+// Index arrow function 
 const index = (req, res) => {
+  let sql;
   const query = req.query.title;
   if (query) {
-    const filterdPost = posts.filter(post => post.title.toLowerCase().includes(query.toLowerCase()))
-    if (!filterdPost) {
-      return res.status(404).json({
-        error: 'Post non trovata'
-      })
-    }
-    if (filterdPost) { return res.json(filterdPost) }
+    sql = `SELECT * FROM posts WHERE title like '%${query}%'`
+  } else {
+    sql = `SELECT * FROM posts`;
   }
-  res.json(posts)
+  connection.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: 'database query failed' })
+    res.json(results);
+  })
 }
 
 const show = (req, res) => {
