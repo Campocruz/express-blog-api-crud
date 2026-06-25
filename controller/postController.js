@@ -102,7 +102,6 @@ const modify = (req, res) => {
 
 
 const destroy = (req, res) => {
-  let sql;
   if (req.params.id) {
     const id = parseInt(req.params.id);
     const findIdSql = `SELECT * FROM posts WHERE id = ?`;
