@@ -25,7 +25,6 @@ const show = (req, res) => {
       if (err) return res.status(500).json({ error: 'Database query failed' })
       if (results.length === 0) return res.status(404).json({ error: 'Post not found' });
       const post = results[0];
-      console.log(post);
       const sqlTags = `SELECT tags.label
                       FROM post_tag
                       JOIN tags ON post_tag.tag_id = tags.id
@@ -33,8 +32,8 @@ const show = (req, res) => {
                       WHERE posts.id = ${id}`;
       connection.query(sqlTags, (err, results) => {
         if (err) return res.status(500).json({ error: 'Database quey failed' })
-        post.tags = results;
-        console.log(post);
+        const listResults = results.map(result => result.label);
+        post.tags = listResults;
         res.json(post);
       });
     });
